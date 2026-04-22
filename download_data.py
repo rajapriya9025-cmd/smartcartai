@@ -3,11 +3,11 @@ import os
 os.makedirs('data',exist_ok=True)
 
 files ={
-    "data/products.csv": "https://drive.google.com/file/d/1yqbLHWgk6laINBX6QgG8OZfAW2cHfz0q/view?usp=drive_link",
-    "data/users.csv": "https://drive.google.com/file/d/1iTdUZglcz7T4IDzyxvvF7y1gSJM4IULK/view?usp=sharing",
-    "data/interactions.csv": "https://drive.google.com/file/d/1M9SlJdKKcitoroncJ4nur7GGlsOH7F_g/view?usp=sharing",
-    "data/cleaned_data.csv":"https://drive.google.com/file/d/16f2n3C-Zrfns20VCzLuYksd1F03yBran/view?usp=sharing",
-    "data/amazon_reviews.csv":"https://drive.google.com/file/d/10vgH6bfeQQZZV8DTEvEsXgU7wNyIuuAO/view?usp=sharing"
+    "data/products.csv": "1yqbLHWgk6laINBX6QgG8OZfAW2cHfz0q",
+    "data/users.csv": "1iTdUZglcz7T4IDzyxvvF7y1gSJM4IULK",
+    "data/interactions.csv": "1M9SlJdKKcitoroncJ4nur7GGlsOH7F",
+    "data/cleaned_data.csv":"16f2n3C-Zrfns20VCzLuYksd1F03yBran",
+    "data/amazon_reviews.csv":"10vgH6bfeQQZZV8DTEvEsXgU7wNyIuuAO",
 
 }
 for path,file_id in files.items():
