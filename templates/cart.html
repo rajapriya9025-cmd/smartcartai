@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block title %}Cart — SmartCart AI{% endblock %}
+
+{% block extra_head %}
+<style>
+  .cart-header { margin-bottom: 1.8rem; }
+  .cart-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 500; color: var(--slate-800);
+  }
+
+  .cart-layout {
+    display: grid; grid-template-columns: 1fr 280px; gap: 1.5rem;
+  }
+  @media (max-width: 640px) { .cart-layout { grid-template-columns: 1fr; } }
+
+  .cart-item {
+    background: var(--white); border: 1.5px solid var(--blue-100);
+    border-radius: 14px; padding: 1rem;
+    display: flex; gap: 1rem; align-items: center;
+    margin-bottom: .8rem;
+  }
+  .cart-item img {
+    width: 72px; height: 72px; object-fit: cover;
+    border-radius: 10px; background: var(--blue-50); flex-shrink: 0;
+  }
+  .cart-item-info { flex: 1; }
+  .cart-item-info h4 { font-size: .9rem; font-weight: 500; margin-bottom: .25rem; }
+  .cart-item-info .brand { font-size: .75rem; color: var(--slate-400); }
+  .cart-item-info .price { font-size: .95rem; font-weight: 600; color: var(--blue-600); margin-top: .3rem; }
+  .remove-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--slate-400); font-size: 1rem; transition: color .2s;
+  }
+  .remove-btn:hover { color: #ef4444; }
+
+  .order-summary {
+    background: var(--white); border: 1.5px solid var(--blue-100);
+    border-radius: 16px; padding: 1.4rem;
+    height: fit-content; position: sticky; top: 78px;
+  }
+  .order-summary h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 500; margin-bottom: 1.2rem;
+  }
+  .summary-row {
+    display: flex; justify-content: space-between;
+    font-size: .88rem; color: var(--slate-600); margin-bottom: .6rem;
+  }
+  .summary-total {
+    display: flex; justify-content: space-between;
+    font-size: 1rem; font-weight: 600; color: var(--slate-800);
+    padding-top: .8rem; margin-top: .8rem;
+    border-top: 1.5px solid var(--blue-100);
+  }
+  .checkout-btn {
+    width: 100%; margin-top: 1.1rem;
+    background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
+    color: #fff; border: none; border-radius: 12px; padding: .8rem;
+    font-family: inherit; font-size: .95rem; font-weight: 500; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(59,130,246,.28);
+    transition: opacity .2s;
+  }
+  .checkout-btn:hover { opacity: .9; }
+
+  .empty-cart {
+    text-align: center; padding: 4rem 1rem;
+    color: var(--slate-400);
+  }
+  .empty-cart .emoji { font-size: 3rem; display: block; margin-bottom: 1rem; }
+  .empty-cart h3 { font-size: 1.1rem; color: var(--slate-600); margin-bottom: .5rem; }
+  .empty-cart a {
+    display: inline-flex; margin-top: 1rem;
+    background: var(--blue-500); color: #fff; border-radius: 10px;
+    padding: .6rem 1.3rem; text-decoration: none; font-size: .9rem;
+    transition: background .2s;
+  }
+  .empty-cart a:hover { background: var(--blue-600); }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="page-wrap">
+  <div class="cart-header">
+    <h1>Your Cart 🛒</h1>
+  </div>
+
+  {% if items %}
+  <div class="cart-layout">
+    <div class="cart-items">
+      {% for p in items %}
+      <div class="cart-item">
+        <img src="{{ p.image_url }}" alt="{{ p.product_name }}"
+             onerror="this.src='https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=400'">
+        <div class="cart-item-info">
+          <h4>{{ p.product_name }}</h4>
+          <p class="brand">{{ p.brand }}</p>
+          <p class="price">${{ "%.2f"|format(p.price|float) }}</p>
+        </div>
+        <form action="{{ url_for('remove_from_cart', product_id=p.product_id) }}" method="post">
+          <button class="remove-btn" type="submit" title="Remove">✕</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="order-summary">
+      <h3>Order Summary</h3>
+      <div class="summary-row"><span>Items ({{ items|length }})</span><span>${{ "%.2f"|format(total) }}</span></div>
+      <div class="summary-row"><span>Shipping</span><span style="color:var(--blue-500)">Free</span></div>
+      <div class="summary-total"><span>Total</span><span>${{ "%.2f"|format(total) }}</span></div>
+      <button class="checkout-btn" onclick="showToast('Checkout coming soon! 🚀')">Proceed to Checkout →</button>
+    </div>
+  </div>
+
+  {% else %}
+  <div class="empty-cart">
+    <span class="emoji">🛒</span>
+    <h3>Your cart is empty</h3>
+    <p>Browse our products and add something you love!</p>
+    <a href="{{ url_for('home') }}">Start Shopping →</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

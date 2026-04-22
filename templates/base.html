@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}SmartCart AI{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-50:  #eff6ff;
+      --blue-100: #dbeafe;
+      --blue-200: #bfdbfe;
+      --blue-300: #93c5fd;
+      --blue-400: #60a5fa;
+      --blue-500: #3b82f6;
+      --blue-600: #2563eb;
+      --blue-700: #1d4ed8;
+      --slate-50: #f8fafc;
+      --slate-100:#f1f5f9;
+      --slate-200:#e2e8f0;
+      --slate-400:#94a3b8;
+      --slate-600:#475569;
+      --slate-800:#1e293b;
+      --white:    #ffffff;
+      --radius:   14px;
+      --shadow:   0 4px 24px rgba(59,130,246,.10);
+      --shadow-lg:0 8px 40px rgba(59,130,246,.16);
+      font-size: 15px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--blue-50);
+      color: var(--slate-800);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--white);
+      border-bottom: 1.5px solid var(--blue-100);
+      position: sticky; top: 0; z-index: 100;
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--blue-600);
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: -.3px;
+      flex-shrink: 0;
+    }
+    .nav-logo span { color: var(--slate-400); font-weight: 300; }
+    .nav-search {
+      flex: 1;
+      max-width: 360px;
+      display: flex;
+      align-items: center;
+      background: var(--blue-50);
+      border: 1.5px solid var(--blue-100);
+      border-radius: 30px;
+      padding: 0 1rem;
+      gap: .5rem;
+    }
+    .nav-search input {
+      border: none; background: transparent;
+      width: 100%; padding: .45rem 0;
+      font-family: inherit; font-size: .9rem;
+      color: var(--slate-800); outline: none;
+    }
+    .nav-search input::placeholder { color: var(--slate-400); }
+    .nav-search button {
+      background: none; border: none; cursor: pointer;
+      color: var(--blue-400); font-size: 1rem; padding: 0;
+    }
+    .nav-icons { margin-left: auto; display: flex; align-items: center; gap: .5rem; }
+    .nav-icon-btn {
+      position: relative;
+      background: var(--blue-50);
+      border: 1.5px solid var(--blue-100);
+      border-radius: 50%; width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; color: var(--slate-600);
+      font-size: 1.05rem; cursor: pointer; transition: all .2s;
+    }
+    .nav-icon-btn:hover { background: var(--blue-100); color: var(--blue-600); }
+    .badge {
+      position: absolute; top: -4px; right: -4px;
+      background: var(--blue-500); color: #fff;
+      font-size: .6rem; font-weight: 600;
+      border-radius: 50%; width: 16px; height: 16px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── MAIN WRAPPER ── */
+    .page-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ── CARDS ── */
+    .product-card {
+      background: var(--white);
+      border: 1.5px solid var(--blue-100);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform .22s, box-shadow .22s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .product-card img {
+      width: 100%; aspect-ratio: 1/1;
+      object-fit: cover;
+      background: var(--blue-50);
+    }
+    .product-card-body { padding: .85rem; }
+    .product-card-body h4 {
+      font-size: .88rem; font-weight: 500;
+      line-height: 1.35;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+      margin-bottom: .35rem;
+    }
+    .product-card-body .brand {
+      font-size: .75rem; color: var(--slate-400); margin-bottom: .35rem;
+    }
+    .product-card-body .price {
+      font-weight: 600; color: var(--blue-600); font-size: .95rem;
+    }
+
+    /* ── GRID ── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex; align-items: baseline; gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 500;
+      color: var(--slate-800);
+    }
+    .section-header a {
+      font-size: .82rem; color: var(--blue-500); text-decoration: none;
+      margin-left: auto;
+    }
+    .section-header a:hover { text-decoration: underline; }
+
+    /* ── BTN ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: .4rem;
+      padding: .6rem 1.4rem;
+      border-radius: 30px;
+      border: none; cursor: pointer;
+      font-family: inherit; font-size: .9rem; font-weight: 500;
+      transition: all .2s;
+    }
+    .btn-primary {
+      background: var(--blue-500); color: #fff;
+    }
+    .btn-primary:hover { background: var(--blue-600); }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--blue-200);
+      color: var(--blue-600);
+    }
+    .btn-outline:hover { background: var(--blue-50); }
+
+    /* ── SECTION GAP ── */
+    section { margin-bottom: 2.5rem; }
+
+    /* ── CATEGORY CHIP ── */
+    .cat-chip {
+      display: inline-flex; align-items: center;
+      background: var(--blue-100); color: var(--blue-700);
+      border-radius: 30px; padding: .38rem .95rem;
+      font-size: .82rem; font-weight: 500;
+      text-decoration: none; transition: background .2s;
+    }
+    .cat-chip:hover { background: var(--blue-200); }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      background: var(--slate-800); color: #fff;
+      padding: .7rem 1.3rem; border-radius: 10px;
+      font-size: .88rem; z-index: 999;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    #toast.show { opacity: 1; }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+{% block nav %}
+{% if session.get('user_id') %}
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="{{ url_for('home') }}">SmartCart<span>AI</span></a>
+    <form class="nav-search" action="{{ url_for('search') }}" method="get">
+      <button type="submit">🔍</button>
+      <input type="text" name="q" placeholder="Search products…" value="{{ request.args.get('q','') }}">
+    </form>
+    <div class="nav-icons">
+      <a class="nav-icon-btn" href="{{ url_for('cart') }}" title="Cart">
+        🛒
+        {% if session.get('cart') %}<span class="badge">{{ session['cart']|length }}</span>{% endif %}
+      </a>
+      <a class="nav-icon-btn" href="{{ url_for('logout') }}" title="Logout">🚪</a>
+    </div>
+  </div>
+</nav>
+{% endif %}
+{% endblock %}
+
+{% block body %}{% endblock %}
+
+<div id="toast"></div>
+
+<script>
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+  function addToCart(pid) {
+    fetch(`/cart/add/${pid}`, {method:'POST'})
+      .then(r=>r.json())
+      .then(d=>showToast('Added to cart 🛒'));
+  }
+  function addToWishlist(pid) {
+    fetch(`/wishlist/add/${pid}`, {method:'POST'})
+      .then(r=>r.json())
+      .then(d=>showToast('Saved to wishlist ♡'));
+  }
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

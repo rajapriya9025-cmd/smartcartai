@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SmartCartAI – Create Account</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-100:#dbeafe;--blue-200:#bfdbfe;--blue-300:#93c5fd;
+    --blue-400:#60a5fa;--blue-500:#3b82f6;--blue-600:#2563eb;
+    --text-dark:#1e293b;--text-mid:#475569;--text-soft:#94a3b8;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'DM Sans',sans-serif;
+    background:linear-gradient(135deg,#e0f0ff 0%,#f0f7ff 40%,#dbeafe 100%);
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    padding:24px;overflow:hidden;position:relative;
+  }
+  .blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:.3;animation:float 8s ease-in-out infinite;pointer-events:none;}
+  .blob-1{width:300px;height:300px;background:#93c5fd;top:-60px;right:-60px;animation-delay:0s;}
+  .blob-2{width:220px;height:220px;background:#60a5fa;bottom:-40px;left:-40px;animation-delay:4s;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-24px);}}
+  .card{
+    background:#fff;border-radius:18px;
+    box-shadow:0 20px 60px rgba(59,130,246,.12),0 4px 16px rgba(0,0,0,.06);
+    width:100%;max-width:400px;padding:36px 32px 28px;
+    animation:slideUp .6s cubic-bezier(.22,1,.36,1) both;position:relative;z-index:10;
+  }
+  @keyframes slideUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+  .brand{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:18px;}
+  .brand-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--blue-400),var(--blue-600));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 4px 12px rgba(59,130,246,.35);}
+  .brand-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--blue-600);}
+  .card-title{text-align:center;font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:700;color:var(--text-dark);margin-bottom:4px;}
+  .card-sub{text-align:center;font-size:.8rem;color:var(--text-soft);margin-bottom:22px;}
+  .field{margin-bottom:13px;}
+  .field label{display:block;font-size:.77rem;font-weight:500;color:var(--text-mid);margin-bottom:4px;}
+  .field input{width:100%;padding:11px 14px;border:1.5px solid var(--blue-100);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.87rem;color:var(--text-dark);background:#f8fbff;outline:none;transition:border-color .2s,box-shadow .2s;}
+  .field input:focus{border-color:var(--blue-400);box-shadow:0 0 0 3px rgba(59,130,246,.12);background:#fff;}
+  .pref-label{font-size:.77rem;font-weight:500;color:var(--text-mid);margin-bottom:8px;display:block;}
+  .pref-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+  .pref-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1.5px solid var(--blue-100);border-radius:10px;cursor:pointer;transition:border-color .2s,background .2s;font-size:.82rem;color:var(--text-mid);}
+  .pref-item input{accent-color:var(--blue-500);}
+  .pref-item:has(input:checked){border-color:var(--blue-400);background:#eff6ff;color:var(--blue-600);font-weight:500;}
+  .btn-primary{width:100%;padding:12px;background:linear-gradient(135deg,var(--blue-400),var(--blue-600));color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;letter-spacing:.03em;transition:transform .15s,box-shadow .2s;box-shadow:0 4px 14px rgba(59,130,246,.4);margin-bottom:12px;}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(59,130,246,.5);}
+  .btn-back{width:100%;padding:11px;background:transparent;color:var(--blue-600);border:1.5px solid var(--blue-300);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.87rem;font-weight:500;cursor:pointer;transition:background .15s;}
+  .btn-back:hover{background:#eff6ff;}
+  .error-msg{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;color:#dc2626;font-size:.8rem;padding:9px 12px;margin-bottom:14px;}
+</style>
+</head>
+<body>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="card">
+  <div class="brand">
+    <div class="brand-icon">🛒</div>
+    <span class="brand-name">SmartCartAI</span>
+  </div>
+  <h1 class="card-title">Create Account</h1>
+  <p class="card-sub">Tell us about yourself for personalised picks</p>
+
+  {% if error %}<div class="error-msg">⚠️ {{ error }}</div>{% endif %}
+
+  <form method="POST" action="/register">
+    <div class="field">
+      <label>User ID (unique)</label>
+      <input type="text" name="username" placeholder="Choose a user ID" required>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" name="password" placeholder="Create a password" required>
+    </div>
+    <div class="field">
+      <label>Location (optional)</label>
+      <input type="text" name="location" placeholder="e.g. Chennai, Tamil Nadu">
+    </div>
+
+    <span class="pref-label">What are you interested in? (select all that apply)</span>
+    <div class="pref-grid">
+      {% for cat in categories %}
+      <label class="pref-item">
+        <input type="checkbox" name="preferences" value="{{ cat }}"> {{ cat }}
+      </label>
+      {% endfor %}
+    </div>
+
+    <button class="btn-primary" type="submit">CREATE ACCOUNT</button>
+  </form>
+  <a href="/login"><button class="btn-back" type="button">← Back to Sign In</button></a>
+</div>
+</body>
+</html>
