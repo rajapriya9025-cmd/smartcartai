@@ -1,7 +1,10 @@
-import download_data
-from flask import Flask, render_template, request,redirect, url_for, session, jsonify
+try:
+    import download_data
+except Exception as e:
+    print(f"Data download warning: {e}")
 
-
+from flask import Flask
+# rest of your code...
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import pandas as pd
 import numpy as np
