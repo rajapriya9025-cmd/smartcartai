@@ -1,7 +1,4 @@
-try:
-    import download_data
-except Exception as e:
-    print(f"Data download warning: {e}")
+
 
 from flask import Flask
 # rest of your code...
