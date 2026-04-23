@@ -312,6 +312,9 @@ def api_search():
     return jsonify([{k:v for k,v in p.items()
         if k in ['product_id','product_name','image_url','price','category','brand']}
         for p in flat])
+import os
 
 if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 10000))  # Render uses PORT env variable
+    app.run(host='0.0.0.0', port=port, debug=False)
     app.run(debug=True)
